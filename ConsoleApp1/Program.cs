@@ -1,13 +1,14 @@
-﻿namespace ConsoleApp1;
-
-class Program
+﻿class Program
 {
+
+	private static string startingNode = "A";
+
 	static void Main(string[] args)
 	{
 		var _nodes = setNodes();
 
 		var _dijkstra = new Dijkstra();
-		Node _startNode = _nodes.FirstOrDefault(node => node.Name == "W");
+		Node _startNode = _nodes.FirstOrDefault(_node => _node.Name == startingNode);
 		if (_startNode == null)
 		{
 			Console.WriteLine("Start node not found.");
@@ -16,35 +17,39 @@ class Program
 		_dijkstra.Execute(_startNode, _nodes);
 		var _chargers = _nodes.Where(n => n.IsCharger);
 		Node? _closestCharger = null;
-		int shortestDistance = int.MaxValue;
-		List<Node> shortestPath = null;
+		int _shortestDistance = int.MaxValue;
+		List<Node> _shortestPath = null;
 		foreach (var _charger in _chargers)
 		{
-			List<Node> path = _dijkstra.GetShortestPath(_charger);
+			List<Node> _path = _dijkstra.GetShortestPath(_charger);
 			//Console.WriteLine($"Shortest path to charger {_charger.Name}: {string.Join(" -> ", path.Select(n => n.Name))}");
-			int pathDistance = path.Sum(n => _dijkstra.Distances[n]);
+			int _pathDistance = _path.Sum(n => _dijkstra.Distances[n]);
 
-			Console.WriteLine($"Path to charger {_charger.Name}: {string.Join(" -> ", path.Select(n => n.Name))}, Total Distance: {pathDistance}");
+			Console.WriteLine($"Path to charger {_charger.Name}: {string.Join(" -> ", _path.Select(n => n.Name))}, Total Distance: {_pathDistance}");
 
-			if (pathDistance < shortestDistance)
+			if (_pathDistance < _shortestDistance)
 			{
-				shortestDistance = pathDistance;
+				_shortestDistance = _pathDistance;
 				_closestCharger = _charger;
-				shortestPath = path;
+				_shortestPath = _path;
 			}
 		}
 		Console.WriteLine("_________________________________________________________________________________________");
 		if (_closestCharger != null)
 		{
-			Console.WriteLine($"Most efficient route to a charging station is to {_closestCharger.Name} with a total distance of {shortestDistance}.");
-			Console.WriteLine($"Path: {string.Join(" -> ", shortestPath.Select(n => n.Name))}");
+			Console.WriteLine($"Most efficient route to a charging station is to {_closestCharger.Name} with a total distance of {_shortestDistance}.");
+			Console.WriteLine($"Path: {string.Join(" -> ", _shortestPath.Select(n => n.Name))}");
 		}
 		else
 		{
 			Console.WriteLine("No path to a charging station was found.");
 		}
 	}
-	//sets all the nodes and 
+	/// <summary>
+	/// Sets all nodes and their neighbors and returns a hashset of nodes.
+	/// </summary>
+	/// <param name="_printNodes"></param>
+	/// <returns></returns>
 	private static HashSet<Node> setNodes(bool _printNodes = false)
 	{
 		HashSet<Node> _nodes = new();

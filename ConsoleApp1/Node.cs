@@ -5,10 +5,10 @@ public class Node
 	public string Name { get; set; }
 	public bool IsCharger { get; set; }
 	public List<Edge> Neighbors { get; set; }
-	public Node(string name, bool isCharger)
+	public Node(string _name, bool _isCharger)
 	{
-		Name = name;
-		IsCharger = isCharger;
+		Name = _name;
+		IsCharger = _isCharger;
 		Neighbors = new List<Edge>();
 	}
 	public void AddNeighbor(Node _neighbor, int _distance)
@@ -20,9 +20,9 @@ public class Node
 		StringBuilder _sb = new();
 		_sb.Append($"Node {Name}\n");
 		_sb.Append(IsCharger ? "Charger\n" : "Not Charger\n");
-		foreach (var neighbor in Neighbors)
+		foreach (var _neighbor in Neighbors)
 		{
-			_sb.Append($"\t{neighbor.Neighbor.Name}({neighbor.Distance})\n");
+			_sb.Append($"\t{_neighbor.Neighbor.Name}({_neighbor.Distance})\n");
 		}
 
 		return _sb.ToString();
